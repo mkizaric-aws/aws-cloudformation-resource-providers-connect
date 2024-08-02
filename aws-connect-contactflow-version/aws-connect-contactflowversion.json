@@ -1,111 +1,61 @@
 {
     "typeName": "AWS::Connect::ContactFlowVersion",
-    "description": "An example resource schema demonstrating some basic constructs and validation rules.",
-    "sourceUrl": "https://github.com/aws-cloudformation/aws-cloudformation-rpdk.git",
-    "definitions": {
-        "InitechDateFormat": {
-            "$comment": "Use the `definitions` block to provide shared resource property schemas",
-            "type": "string",
-            "format": "date-time"
-        },
-        "Memo": {
-            "type": "object",
-            "properties": {
-                "Heading": {
-                    "type": "string"
-                },
-                "Body": {
-                    "type": "string"
-                }
-            },
-            "additionalProperties": false
-        },
-        "Tag": {
-            "description": "A key-value pair to associate with a resource.",
-            "type": "object",
-            "properties": {
-                "Key": {
-                    "type": "string",
-                    "description": "The key name of the tag. You can specify a value that is 1 to 128 Unicode characters in length and cannot be prefixed with aws:. You can use any of the following characters: the set of Unicode letters, digits, whitespace, _, ., /, =, +, and -.",
-                    "minLength": 1,
-                    "maxLength": 128
-                },
-                "Value": {
-                    "type": "string",
-                    "description": "The value for the tag. You can specify a value that is 0 to 256 Unicode characters in length and cannot be prefixed with aws:. You can use any of the following characters: the set of Unicode letters, digits, whitespace, _, ., /, =, +, and -.",
-                    "minLength": 0,
-                    "maxLength": 256
-                }
-            },
-            "required": [
-                "Key",
-                "Value"
-            ],
-            "additionalProperties": false
-        }
-    },
+    "description": "Resource Type Definition for ContactFlowVersion",
+    "sourceUrl": "https://github.com/aws-cloudformation/aws-cloudformation-resource-providers-connect",
+    "definitions": {},
     "properties": {
-        "TPSCode": {
-            "description": "A TPS Code is automatically generated on creation and assigned as the unique identifier.",
+        "ContactFlowVersionARN": {
+            "description": "The identifier of the contact flow version (ARN).",
             "type": "string",
-            "pattern": "^[A-Z]{3,5}[0-9]{8}-[0-9]{4}$"
+            "pattern": "^arn:aws[-a-z0-9]*:connect:[-a-z0-9]+:[0-9]{12}:instance/[-a-zA-Z0-9]+/contact-flow/[-a-zA-Z0-9]+/version/[0-9]+$",
+            "minLength": 1,
+            "maxLength": 500
         },
-        "Title": {
-            "description": "The title of the TPS report is a mandatory element.",
+        "ContactFlowARN": {
+            "description": "The identifier of the contact flow (ARN) with a version suffix that identifies this version.",
             "type": "string",
-            "minLength": 20,
-            "maxLength": 250
+            "pattern": "^arn:aws[-a-z0-9]*:connect:[-a-z0-9]+:[0-9]{12}:instance/[-a-zA-Z0-9]+/contact-flow/[-a-zA-Z0-9]+:[0-9]+$",
+            "minLength": 1,
+            "maxLength": 500
         },
-        "CoverSheetIncluded": {
-            "description": "Required for all TPS Reports submitted after 2/19/1999",
-            "type": "boolean"
-        },
-        "DueDate": {
-            "$ref": "#/definitions/InitechDateFormat"
-        },
-        "ApprovalDate": {
-            "$ref": "#/definitions/InitechDateFormat"
-        },
-        "Memo": {
-            "$ref": "#/definitions/Memo"
-        },
-        "SecondCopyOfMemo": {
-            "description": "In case you didn't get the first one.",
-            "$ref": "#/definitions/Memo"
-        },
-        "TestCode": {
+        "ContactFlowId": {
+            "description": "The identifier of the contact flow (ARN|UUID) this version is tied to.",
             "type": "string",
-            "enum": [
-                "NOT_STARTED",
-                "CANCELLED"
-            ]
+            "pattern": "^arn:aws[-a-z0-9]*:connect:[-a-z0-9]+:[0-9]{12}:instance/[-a-zA-Z0-9]+/contact-flow/[-a-zA-Z0-9]+$|^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "minLength": 1,
+            "maxLength": 500
         },
-        "Authors": {
-            "type": "array",
-            "items": {
-                "type": "string"
-            }
+        "Version": {
+            "description": "The version number of this revision",
+            "type": "integer"
         },
-        "Tags": {
-            "description": "An array of key-value pairs to apply to this resource.",
-            "type": "array",
-            "uniqueItems": true,
-            "insertionOrder": false,
-            "items": {
-                "$ref": "#/definitions/Tag"
-            }
+        "Description": {
+            "description": "The description of the version.",
+            "type": "string",
+            "maxLength": 500
         }
     },
     "additionalProperties": false,
     "required": [
-        "TestCode",
-        "Title"
-    ],
-    "readOnlyProperties": [
-        "/properties/TPSCode"
+        "ContactFlowVersionARN",
+        "ContactFlowARN",
+        "ContactFlowId",
+        "Version"
     ],
     "primaryIdentifier": [
-        "/properties/TPSCode"
+        "/properties/ContactFlowVersionARN"
+    ],
+    "additionalIdentifiers": [
+        ["/properties/ContactFlowARN"]
+    ],
+    "readOnlyProperties": [
+        "/properties/ContactFlowVersionARN",
+        "/properties/ContactFlowARN",
+        "/properties/Version"
+    ],
+    "createOnlyProperties": [
+        "/properties/ContactFlowId",
+        "/properties/Description"
     ],
     "handlers": {
         "create": {
